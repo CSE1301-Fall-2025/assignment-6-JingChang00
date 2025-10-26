@@ -11,8 +11,33 @@ public class RecursiveMethods {
 	 */
 	public static double exponent(int base, int exp) {
 		
-			// FIXME Recursively compute base^exp
-			return 0;
+			if(exp == 0)
+			{
+				return 1;
+			}
+			
+			if(exp < 0)
+			{
+				if(base > 0)
+				{
+					return (1/(double)base)*exponent(base, exp+1);
+				}
+				else if(base == 0)
+				{
+				return Double.POSITIVE_INFINITY;
+				}
+				else
+				{
+					return -((double)1/(0-base))*exponent(base, exp+1);
+				}
+			}
+			
+			if(base == 0 && exp >0)
+			{
+				return 0;
+			}
+			
+			return base * exponent(base, exp-1);	
 			
 	}
 
@@ -25,10 +50,17 @@ public class RecursiveMethods {
 	 * @return the sum of the elements in values
 	 */
 	public static int arraySum(int[] array) {
-		
-			// FIXME: Recursively compute the sum of the values in an array
-			return 0;
+			int idx = array.length -1;
+			return helper(array, idx);
 			
+	}
+	public static int helper(int[]array, int idx) // {2,5,8,4,3}
+	{
+		if(idx < 0)
+		{
+			return 0;
+		}
+		return array[idx]+ helper(array, idx-1); // 3+4+8+5+
 	}
 
 	/**
@@ -40,9 +72,21 @@ public class RecursiveMethods {
 	public static String dragon(int n) {
 		
 			// FIXME Recursively compute dragon curves
-			return "";
-			
-	}
+			if(n == 0)
+			{ 
+				return "F-H";
+			}
+
+        String prev = dragon(n - 1);
+        String step1 = prev.replace("F", "A");
+        String step2 = step1.replace("H", "B");
+        step2 = step2.replace("A", "F-H");
+        return step2.replace("B", "F+H");
+
+        }
+
+			   
+
 
 	
 
@@ -57,8 +101,18 @@ public class RecursiveMethods {
 	 */
 	public static int maxPathLength(boolean[][] chart, int r, int c) {
 		
-			// FIXME Find and return the length of the longest path in the array
-			return 0;
-			
+			if (r < 0 || r >= chart.length || c < 0 || c >= chart[0].length || chart[r][c] == false)
+			{
+				return 0;
+			}
+			chart[r][c] = false;             
+    int max = 0;
+    int[] dr = {-1, 1, 0, 0};
+    int[] dc = {0, 0, -1, 1};
+    for (int i = 0; i < 4; i++) {
+        max = Math.max(max, maxPathLength(chart, r + dr[i], c + dc[i]));
+    }
+    chart[r][c] = true;               
+    return max + 1;
+} 		
 	}
-}
